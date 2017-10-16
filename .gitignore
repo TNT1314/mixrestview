@@ -1,0 +1,9 @@
+#system
+.DS_Store
+.idea/
+
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
