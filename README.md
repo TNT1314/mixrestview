@@ -3,15 +3,21 @@
 django restframework api params
 
 1.make sure django and restframework package in your env.
+
+
     (env)$PATH: pip install django==1.10.5
     (env)$PATH: pip install djangorestframework==3.5.4
 
 
 2.install mixrestview.
+
+
     (env)$PATH: pip install mixrestview
 
 
 3.add mixrestview to INSTALLED_APPS.
+
+
     INSTALLED_APPS = [
         ......
         'rest_framework',
@@ -20,6 +26,8 @@ django restframework api params
 
 
 4.add django-restframework DEFAULT_RENDERER_CLASSES.
+
+
     REST_FRAMEWORK = {
         'DEFAULT_RENDERER_CLASSES': (
             'mixrestview.apirender.WebApiRenderer',
@@ -29,20 +37,28 @@ django restframework api params
 
 
 
-
 sample example:
 
+
 1.create project:
+
+
     (env)$PATH: python django-admin.py startproject test_project
 
+
 2.create app:
+
+
     (env)$PATH: cd test_project
     (env)$PATH: python manage.py startapp webapi
+
 
 3.add views directory:
     (env)$PATH: cd webapi
     (env)$PATH: mkdir apis
     (env)$PATH: vi apis/rest_view_test.py
+
+
 
 4.add url to project
     urlpatterns = [
@@ -50,16 +66,24 @@ sample example:
         url(r'^api/', include('webapi.urls', namespace='webapi')),
     ]
 
+
+
 5.add url to app
     urlpatterns = [
         url(r'^test/', include('webapi.apis.rest_view_test')),
     ]
 
+
+
 6.run server:
     (env)$PATH:python manage.py runserver:8000
 
+
+
 7.browse the address in your browser:
     http://localhost:8000/api/test/ping
+
+
 
 note:
 
