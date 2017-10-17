@@ -54,6 +54,8 @@ sample example:
 
 
 3.add views directory:
+
+
     (env)$PATH: cd webapi
     (env)$PATH: mkdir apis
     (env)$PATH: vi apis/rest_view_test.py
@@ -61,6 +63,8 @@ sample example:
 
 
 4.add url to project
+
+
     urlpatterns = [
         # api
         url(r'^api/', include('webapi.urls', namespace='webapi')),
@@ -69,6 +73,8 @@ sample example:
 
 
 5.add url to app
+
+
     urlpatterns = [
         url(r'^test/', include('webapi.apis.rest_view_test')),
     ]
@@ -76,11 +82,15 @@ sample example:
 
 
 6.run server:
+
+
     (env)$PATH:python manage.py runserver:8000
 
 
 
 7.browse the address in your browser:
+
+
     http://localhost:8000/api/test/ping
 
 
