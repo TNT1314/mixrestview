@@ -44,7 +44,7 @@ django restframework api params
 
 
     (env)$PATH: vi test_project/settings.py
-    
+
         update:
             INSTALLED_APPS = [
                 ......

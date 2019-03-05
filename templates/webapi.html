@@ -8,6 +8,12 @@
     {{ name }}
 {% endblock %}
 
+{% block style %}
+    {{ block.super }}
+    {% load static %}
+     <link rel="stylesheet" href="{% static "mixrestview/highlight/styles/ascetic.css" %}">
+{% endblock %}
+
 {% block branding %}
     <a class='navbar-brand' rel="nofollow" href='http://www.django-rest-framework.org'>
         Application Program Interface
@@ -32,6 +38,9 @@
             border-bottom-width: 0;
         }
 
+        .hljs{
+            background: inherit !important;
+        }
     </style>
     <ul id="myTab" class="nav nav-tabs" style="border-bottom: 1px solid #ddd;">
         <li class="active" style="float: left;">
@@ -49,7 +58,14 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
-                            <td><b>{{ request.method }}</b> <lable id="full_path">{{ request.get_full_path }}</lable><br/><br/>{{ description }}</td>
+                            <td>
+                                <b>{{ request.method }}</b>
+                                <lable id="full_path">{{ request.get_full_path }}</lable><br/>
+                                <b>接口：</b>
+                                <pre style="background: inherit !important;border: none !important;">
+                                    <code class="python">{{ description }}</code>
+                                </pre>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -99,8 +115,14 @@
     {% load static %}
     <script src="{% static "mixrestview/js/tooltip.js" %}"></script>
     <script src="{% static "mixrestview/js/popover.js" %}"></script>
+    <script src="{% static "mixrestview/highlight/js/highlight.pack.js" %}"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <script>
         $(document).ready(function () {
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+
             $("#myTab").parent().removeAttr("style");
             $('.toolpopover').mouseover(function(e){
                 $(e.target).popover('show');
