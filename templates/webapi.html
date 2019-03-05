@@ -59,10 +59,10 @@
                     <tbody>
                         <tr>
                             <td>
-                                <b>{{ request.method }}</b>
-                                <lable id="full_path">{{ request.get_full_path }}</lable><br/>
-                                <b>接口：</b>
-                                <pre style="background: inherit !important;border: none !important;">
+                                <b>请求：{{ request.method }}</b>
+                                <b id="full_path">{{ request.get_full_path }}</b><br/>
+                                <b>描述：</b>
+                                <pre style="background: inherit !important;border: none !important;margin: -20px 0px -45px 10px !important;padding: 0px !important;">
                                     <code class="python">{{ description }}</code>
                                 </pre>
                             </td>
@@ -131,7 +131,8 @@
             });
 
             var path = $("#full_path").html();
-            var local_path = "http://"+window.location.host+path;
+            var uncode_ath = decodeURIComponent(path);
+            var local_path = "http://"+window.location.host+uncode_ath;
             $("#full_path").html(local_path);
 
             $(".request-info").first().remove();
