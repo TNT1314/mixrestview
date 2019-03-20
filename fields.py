@@ -10,6 +10,7 @@ from django.db import models
 from django.forms import fields
 
 # to prevent Importation-Examination
+from django.forms.fields import *
 from django.utils.encoding import force_text
 from django.forms.models import fields_for_model
 from django.core.exceptions import ValidationError
@@ -125,9 +126,7 @@ def wrap_field(fieldclass):
 
 for _fieldclass_name in fields.__all__[1:]:
     exec '{0} = wrap_field(fields.{0})'.format(_fieldclass_name)
-
-
-del _fieldclass_name
+    del _fieldclass_name
 
 
 # overwrite BooleanField and NullBooleanField to accept 0,1
@@ -170,7 +169,7 @@ class LatitudeField(fields.FloatField):
             max_value, min_value, *args, **kwargs)
 
 
-class SplitCharField(fields.CharField):
+class SplitCharField(CharField):
     """
         Split string value with given sep or seps
     """
@@ -190,7 +189,7 @@ class SplitCharField(fields.CharField):
             return []
 
 
-class TimestampField(fields.IntegerField):
+class TimestampField(IntegerField):
     def to_python(self, value):
         v = super(TimestampField, self).to_python(value)
         if v is None:
@@ -198,7 +197,7 @@ class TimestampField(fields.IntegerField):
         return timestamp2datetime(v)
 
 
-class PairCharField(fields.CharField):
+class PairCharField(CharField):
     """
         Split string value with given seps
     """
@@ -207,7 +206,7 @@ class PairCharField(fields.CharField):
         'unpaired': _('Enter a valid value.'),
     }
 
-    default_field = (fields.CharField(), fields.CharField())
+    default_field = (CharField(), CharField())
 
     def __init__(self, *args, **kwargs):
         self.seps = kwargs.pop('seps', ('|', '.'))
@@ -242,7 +241,7 @@ class PairCharField(fields.CharField):
                     yield ret
 
 
-class RegexField(fields.CharField):
+class RegexField(CharField):
     """
         overloadRegexField
     """
@@ -267,7 +266,7 @@ class RegexField(fields.CharField):
     regex = property(_get_regex, _set_regex)
 
 
-class IntegerChoice(fields.ChoiceField):
+class IntegerChoice(ChoiceField):
     """
         数字选项扩展
 
@@ -285,7 +284,7 @@ class IntegerChoice(fields.ChoiceField):
         return force_text(value)
 
 
-class IntegerIDField(fields.IntegerField):
+class IntegerIDField(IntegerField):
     """
         ID参数扩展(model ID不能小于等于0验证)
     """
@@ -297,7 +296,7 @@ class IntegerIDField(fields.IntegerField):
         return value
 
 
-class Char2JsonField(fields.CharField):
+class Char2JsonField(CharField):
     """ json 字符串处理扩展 """
 
     default_error_messages = {

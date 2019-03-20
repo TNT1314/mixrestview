@@ -24,20 +24,15 @@ class WebApiRenderer(BrowsableAPIRenderer):
     template = 'webapi.html'
 
     def get_context(self, data, accepted_media_type, renderer_context):
-        context = super(WebApiRenderer, self).get_context(data, accepted_media_type, renderer_context)
-
         # 获取帮助信息
+        context = super(WebApiRenderer, self).get_context(data, accepted_media_type, renderer_context)
         param_help_text = self.get_params_help(renderer_context['view'])
-
         context.update({"helps":param_help_text})
-
         return context
 
     def get_params_help(self, view):
         """
             this function to get param help_text
-            :param view:
-            :return:
         """
         help_list = list()
         feilds = view._meta.param_fields
@@ -45,7 +40,7 @@ class WebApiRenderer(BrowsableAPIRenderer):
             f_item = feilds.get(f_name)
             helps_dict = dict()
             helps_dict["name"] = f_name
-            helps_dict["type"] = f_item.type_name
+            helps_dict["type"] = f_item.__class__.__name__
             helps_dict["need"] = u"是" if f_item.required else u"否"
             helps_dict["desc"] = f_item.help_text
 
