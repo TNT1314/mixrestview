@@ -1,10 +1,9 @@
 #! usr/bin/env python
 # encoding: utf-8
-from __future__ import unicode_literals
-
-""" 
+"""
     date: 2017-10-13
 """
+from __future__ import unicode_literals
 
 import re
 

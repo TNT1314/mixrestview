@@ -1,11 +1,10 @@
 #! usr/bin/env python
 # encoding: utf-8
-from __future__ import unicode_literals
-
-""" 
+"""
     date: 2017-10-12
     desc: View utils package
 """
+from __future__ import unicode_literals
 
 from datetime import datetime
 from django.conf.urls import url

@@ -1,15 +1,13 @@
 #! usr/bin/env python
 # encoding: utf-8
-from __future__ import unicode_literals
-
-""" 
+"""
     date: 2017-10-12
     desc: new api view, mix django form and restframework view
 """
-
-from rest_framework.response import Response
+from __future__ import unicode_literals
 
 from .mixview import View
+from rest_framework.response import Response
 
 
 class APIView(View):

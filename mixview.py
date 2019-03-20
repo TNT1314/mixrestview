@@ -1,11 +1,11 @@
 #! usr/bin/env python
 # encoding: utf-8
-
-from __future__ import unicode_literals
-""" 
+"""
     date: 2017-10-12
     desc: metaclass
 """
+
+from __future__ import unicode_literals
 
 from urlparse import urljoin
 from collections import OrderedDict

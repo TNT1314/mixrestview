@@ -1,17 +1,16 @@
 #! usr/bin/env python
 # encoding: utf-8
-
 """
-Wrap django form fields to use `default` instead of `required`
+    Wrap django form fields to use `default` instead of `required`
 """
-
 from __future__ import unicode_literals, absolute_import
 
 from functools import wraps
 from django.db import models
 from django.forms import fields
+
 # to prevent Importation-Examination
-from django.forms.fields import *
+from django.utils.encoding import force_text
 from django.forms.models import fields_for_model
 from django.core.exceptions import ValidationError
 from django.utils.six import string_types
@@ -22,12 +21,14 @@ from .validators import valid_mobile
 from .utils import timestamp2datetime
 from .widgets import BooleanInput, NullBooleanSelect
 
+
 class _Empty(object):
     def __nonzero__(self):
         return False
 
     def __str__(self):
         return '<empty>'
+
 
 empty = _Empty()
 
@@ -130,7 +131,7 @@ del _fieldclass_name
 
 
 # overwrite BooleanField and NullBooleanField to accept 0,1
-class BooleanField(BooleanField):
+class BooleanField(fields.BooleanField):
 
     widget = BooleanInput
 
@@ -149,27 +150,27 @@ class BooleanField(BooleanField):
                 raise ValidationError(self.error_messages['required'], code='required')
 
 
-class NullBooleanField(NullBooleanField):
+class NullBooleanField(fields.NullBooleanField):
     widget = NullBooleanSelect
 
 
-class MobileField(CharField):
+class MobileField(fields.CharField):
     default_validators = [valid_mobile]
 
 
-class LongitudeField(FloatField):
+class LongitudeField(fields.FloatField):
     def __init__(self, max_value=180.0, min_value=-180.0, *args, **kwargs):
         super(LongitudeField, self).__init__(
             max_value, min_value, *args, **kwargs)
 
 
-class LatitudeField(FloatField):
+class LatitudeField(fields.FloatField):
     def __init__(self, max_value=90.0, min_value=-90.0, *args, **kwargs):
         super(LatitudeField, self).__init__(
             max_value, min_value, *args, **kwargs)
 
 
-class SplitCharField(CharField):
+class SplitCharField(fields.CharField):
     """
         Split string value with given sep or seps
     """
@@ -189,7 +190,7 @@ class SplitCharField(CharField):
             return []
 
 
-class TimestampField(IntegerField):
+class TimestampField(fields.IntegerField):
     def to_python(self, value):
         v = super(TimestampField, self).to_python(value)
         if v is None:
@@ -197,7 +198,7 @@ class TimestampField(IntegerField):
         return timestamp2datetime(v)
 
 
-class PairCharField(CharField):
+class PairCharField(fields.CharField):
     """
         Split string value with given seps
     """
@@ -206,7 +207,7 @@ class PairCharField(CharField):
         'unpaired': _('Enter a valid value.'),
     }
 
-    default_field = (CharField(), CharField())
+    default_field = (fields.CharField(), fields.CharField())
 
     def __init__(self, *args, **kwargs):
         self.seps = kwargs.pop('seps', ('|', '.'))
@@ -241,7 +242,7 @@ class PairCharField(CharField):
                     yield ret
 
 
-class RegexField(CharField):
+class RegexField(fields.CharField):
     """
         overloadRegexField
     """
@@ -264,3 +265,50 @@ class RegexField(CharField):
         self.validators.append(self._regex_validator)
 
     regex = property(_get_regex, _set_regex)
+
+
+class IntegerChoice(fields.ChoiceField):
+    """
+        数字选项扩展
+
+        将选项转换成数字
+
+        required 为True 时， 如果传入空，则值为default 否则为传入的值
+        required 为False 时， 返回None
+    """
+
+    def to_python(self, value):
+        if value in self.empty_values:
+            return None
+        if value.isdigit():
+            return int(value)
+        return force_text(value)
+
+
+class IntegerIDField(fields.IntegerField):
+    """
+        ID参数扩展(model ID不能小于等于0验证)
+    """
+
+    def to_python(self, value):
+        value = super(IntegerIDField, self).to_python(value)
+        if value is not None and value <= 0:
+            value = None
+        return value
+
+
+class Char2JsonField(fields.CharField):
+    """ json 字符串处理扩展 """
+
+    default_error_messages = {
+        'json_error': u"请输入正确的参数，如：'[23,45]'",
+    }
+
+    def to_python(self, value):
+        if value in self.empty_values:
+            return None
+
+        try:
+           return json.loads(value)
+        except:
+           raise ValidationError(self.error_messages['json_error'], code='json_error')

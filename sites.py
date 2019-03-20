@@ -1,21 +1,16 @@
 #! usr/bin/env python
 # encoding: utf-8
-from __future__ import unicode_literals
-
-""" 
+"""
     auth: wormer@wormer.cn
     date: 2017-10-13
 """
-
-#! usr/bin/env python
-# encoding: utf-8
-
-from __future__ import absolute_import
+from __future__ import unicode_literals
 
 from collections import OrderedDict
 
 from django.conf.urls import url
 from django.contrib.admin.sites import AlreadyRegistered
+
 
 class ViewSite(object):
     """

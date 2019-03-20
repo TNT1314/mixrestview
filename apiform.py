@@ -1,7 +1,5 @@
 #! usr/bin/env python
 # encoding: utf-8
-from __future__ import unicode_literals
-
 """ 
     auth: wormer@wormer.cn
     proj: site_salary
@@ -9,6 +7,7 @@ from __future__ import unicode_literals
     desc: 
         site_salary
 """
+from __future__ import unicode_literals
 
 from django.forms import Form
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError

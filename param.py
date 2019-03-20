@@ -1,11 +1,10 @@
 #! usr/bin/env python
 # encoding: utf-8
-from __future__ import unicode_literals
-
-""" 
-    date: 2017-10-12
-    desc: format request params to django form 
 """
+    date: 2017-10-12
+    desc: format request params to django form
+"""
+from __future__ import unicode_literals
 
 from django import forms
 from django.forms.utils import ErrorDict
@@ -36,7 +35,7 @@ class Param(object):
         elif method == 'post':
             self._bounded_form = view.param_form(request.POST, request.FILES)
         else:
-            raise Exception("requested socket type not supported.")
+            raise forms.ValidationError({'request type error': u"{} type is not support. request type must be GET or POST.".format(method)})
         self._dependency = self._opts.param_dependency
         if self._opts.param_managed:
             errors = self._bounded_form.errors
